@@ -2,13 +2,18 @@
 
 Study of sorting algorithms using python.
 
+1. [Bubble Sort](#bubble)
+2. [Selection Sort](#selection)
+3. [Insertion Sort](#insertion)
+4. [Merge Sort](#merge)
+5. [Quick Sort](#quick)
+
 &nbsp;
 
+<a name="bubble"></a>
 ### Bubble Sort
 
-Bubble Sort is one of the most straightforward sorting algorithms. Its name comes from the way the algorithm works: With every new pass, the largest element in the list “bubbles up” toward its correct position.
-
-Bubble sort consists of making multiple passes through a list, comparing elements one by one, and swapping adjacent items that are out of order.
+Bubble Sort is one of the most straightforward sorting algorithms and the simplest one. Iterates over the list, in each iteration it compares elements in pairs and keeps swapping them such that the larger element is moved towards the end of the list.
 
 ```python
 def bubbleSort(arr):
@@ -22,36 +27,18 @@ def bubbleSort(arr):
                 arr[j], arr[j+1] = arr[j+1], arr[j]
 ```
 
-#
-&nbsp;
-
-###  Insertion Sort
-
-Like bubble sort, the insertion sort algorithm is straightforward to implement and understand. But unlike bubble sort, it builds the sorted list one element at a time by comparing each item with the rest of the list and inserting it into its correct position. This “insertion” procedure gives the algorithm its name.
-
-An excellent analogy to explain insertion sort is the way you would sort a deck of cards. Imagine that you’re holding a group of cards in your hands, and you want to arrange them in order. You’d start by comparing a single card step by step with the rest of the cards until you find its correct position. At that point, you’d insert the card in the correct location and start over with a new card, repeating until all the cards in your hand were sorted.
-
-```python
-def insertion_sort(array):
-    for i in range(1, len(array)):
-        key_item = array[i]
-        j = i - 1
-
-        while j >= 0 and array[j] > key_item:
-            array[j + 1] = array[j]
-            j -= 1
-
-        array[j + 1] = key_item
-
-    return array
-```
+* Non recursive
+* Stable
+* In place
+* O(n²)
 
 #
 &nbsp;
 
+<a name="selection"></a>
 ### Selection Sort
 
-Selection sort is an in-place comparison sorting algorithm. It has an O(n2) time complexity, which makes it inefficient on large lists, and generally performs worse than the similar insertion sort. Selection sort is noted for its simplicity and has performance advantages over more complicated algorithms in certain situations, particularly where auxiliary memory is limited.
+In this algorithm we create two segments of the list one sorted and other unsorted. We continuously remove the smallest element from the unsorted segment of the list and append it to the sorted segment. We don’t swap intermediate elements. Hence this algorithm sorts the array in minimum number of swaps.
 
 ```python
 def selectionSort(array):
@@ -66,15 +53,45 @@ def selectionSort(array):
     return array
 ```
 
+* Non recursive
+* Unstable
+* In place
+* O(n²)
 
 #
 &nbsp;
 
+<a name="insertion"></a>
+###  Insertion Sort
+
+Like Selection Sort, in this algorithm we segment the list into sorted and unsorted parts. Then we iterate over the unsorted segment, and insert the element from this segment into the correct position in the sorted list.
+
+```python
+def insertionSort(array):
+    for i in range(1, len(array)):
+        key = array[i]
+        j = i-1
+        while array[j] > key and j >= 0:
+            array[j+1] = array[j]
+            j -= 1
+        array[j+1] = key
+    return array
+```
+
+* Non-recursive
+* Stable
+* In place
+* O(n²)
+
+#
+&nbsp;
+
+<a name="merge"></a>
 ### Merge Sort
 
 Merge sort is a very efficient sorting algorithm. It’s based on the divide-and-conquer approach, a powerful algorithmic technique used to solve complex problems.
 
-To properly understand divide and conquer, you should first understand the concept of recursion. Recursion involves breaking a problem down into smaller subproblems until they’re small enough to manage. In programming, recursion is usually expressed by a function calling itself.
+In this algorithm we split a list in half, and keeps splitting the list by 2 until it only has single element. Then we merge the sorted sorted list. We keep doing this until we get a sorted list with all the elements of the unsorted input list.
 
 ```python
 def mergeSort(arr):
@@ -111,11 +128,19 @@ def mergeSort(arr):
             k += 1
 ```
 
+* Recursive
+* Stable
+* Needs extra space
+* O(nlogn)
+
 
 #
 &nbsp;
 
+<a name="quick"></a>
 ### Quick Sort
+
+In this algorithm we partition the list around a pivot element, sorting values around the pivot. In my solution I used the the last element from the list as pivot value. Best performance is achieved when the pivot value splits the list in two almost equal halves.
 
 Just like merge sort, the Quicksort algorithm applies the divide-and-conquer principle to divide the input array into two lists, the first with small items and the second with large items. The algorithm then sorts both lists recursively until the resultant list is completely sorted.
 
@@ -123,27 +148,26 @@ Dividing the input list is referred to as partitioning the list. Quicksort first
 
 Putting every element from the low list to the left of the pivot and every element from the high list to the right positions the pivot precisely where it needs to be in the final sorted list. This means that the function can now recursively apply the same procedure to low and then high until the entire list is sorted.
 
+
 ```python
-from random import randint
-
-def quicksort(array):
-    if len(array) < 2:
+def quickSort(array):
+    if len(array)> 1:
+        pivot=array.pop()
+        grtr_lst, equal_lst, smlr_lst = [], [pivot], []
+        for item in array:
+            if item == pivot:
+                equal_lst.append(item)
+            elif item > pivot:
+                grtr_lst.append(item)
+            else:
+                smlr_lst.append(item)
+        return (quickSort(smlr_lst) + equal_lst + quickSort(grtr_lst))
+    else:
         return array
-
-    low, same, high = [], [], []
-
-    pivot = array[randint(0, len(array) - 1)]
-
-    for item in array:
-        if item < pivot:
-            low.append(item)
-        elif item == pivot:
-            same.append(item)
-        elif item > pivot:
-            high.append(item)
-
-    return quicksort(low) + same + quicksort(high)
 ```
-
+* Recursive
+* In place
+* Unstable
+* O(nlogn)
 
 
