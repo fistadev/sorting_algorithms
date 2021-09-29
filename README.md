@@ -54,7 +54,16 @@ def insertion_sort(array):
 Selection sort is an in-place comparison sorting algorithm. It has an O(n2) time complexity, which makes it inefficient on large lists, and generally performs worse than the similar insertion sort. Selection sort is noted for its simplicity and has performance advantages over more complicated algorithms in certain situations, particularly where auxiliary memory is limited.
 
 ```python
+def selectionSort(array):
+    for i in range(len(array)-1):
+        min_idx = i
+        
+        for idx in range(i + 1, len(array)-1):
+            if array[idx] < array[min_idx]:
+                min_idx = idx
+        array[i], array[min_idx] = array[min_idx], array[i]
 
+    return array
 ```
 
 
